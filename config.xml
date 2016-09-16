@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>c3mainfilter</name>
+	<displayName><![CDATA[C3MainFilter module]]></displayName>
+	<version><![CDATA[0.0.1]]></version>
+	<description><![CDATA[Adds C3's stepped filter list in front-end.]]></description>
+	<author><![CDATA[Schnepp David]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

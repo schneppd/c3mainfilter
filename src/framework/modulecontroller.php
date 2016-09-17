@@ -6,7 +6,7 @@
  * @since 2016/09/13
  */
 
-namespace NsC3Framework;
+namespace NsC3MainFilterFramework;
 
 include_once(dirname(__FILE__) . '/moduleio.php');
 

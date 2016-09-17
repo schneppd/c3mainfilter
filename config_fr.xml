@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>c3keywords</name>
+	<name>c3mainfilter</name>
 	<displayName><![CDATA[C3MainFilter block]]></displayName>
-	<version><![CDATA[0.0.1]]></version>
-	<description><![CDATA[Ajoute le filtre principale C3 au front-end.]]></description>
+	<version><![CDATA[0.1.0]]></version>
+	<description><![CDATA[Adds C3&#039;s stepped filter list in front-end.]]></description>
 	<author><![CDATA[Schnepp David]]></author>
 	<tab><![CDATA[front_office_features]]></tab>
 	<is_configurable>1</is_configurable>

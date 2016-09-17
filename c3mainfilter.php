@@ -59,8 +59,8 @@ class C3MainFilter extends Module {
 	* @since v0.1 2016/09/17
 	*/
 	protected function customizeModuleConstruction() {
-		$moduleInformations = new \NsC3Framework\ModuleInformations($this->name, dirname(__FILE__), _PS_CACHE_DIR_, _DB_PREFIX_);
-		$dbConnection = new \NsC3Framework\DatabaseConnection(Db::getInstance(_PS_USE_SQL_SLAVE_), _DB_PREFIX_);
+		$moduleInformations = new \NsC3MainFilterFramework\ModuleInformations($this->name, dirname(__FILE__), _PS_CACHE_DIR_, _DB_PREFIX_);
+		$dbConnection = new \NsC3MainFilterFramework\DatabaseConnection(Db::getInstance(_PS_USE_SQL_SLAVE_), _DB_PREFIX_);
 		$this->controller = new \NsC3MainFilterModule\MainFilterController($moduleInformations, $dbConnection);
 	}
 	
@@ -145,7 +145,7 @@ class C3MainFilter extends Module {
 				$errors[] = $this->l('There is an error with the module\'s cache dir creation/existence (rights problem most likely).');
 			// check if C3KEYWORDS_NB was provided
 			$maxProductPerCategoryFilterCall = Tools::getValue('C3MAINFILTER_NB');
-			if (!strlen($maxTagPerCategory))
+			if (!strlen($maxProductPerCategoryFilterCall))
 				$errors[] = $this->l('Please complete the "Displayed tags" field.');
 			elseif (!Validate::isInt($maxProductPerCategoryFilterCall) || (int) ($maxProductPerCategoryFilterCall) <= 0)
 				$errors[] = $this->l('Invalid number.');

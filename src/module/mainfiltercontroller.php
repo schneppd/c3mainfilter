@@ -14,7 +14,7 @@ include_once(dirname(__FILE__) . '/mainfiltermodel.php');
 include_once(dirname(__FILE__) . '/../framework/modulecontroller.php');
 include_once(dirname(__FILE__) . '/../framework/moduleio.php');
 
-class MainFilterController extends \NsC3Framework\ModuleController {
+class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 
 	/*
 	 * the constructor

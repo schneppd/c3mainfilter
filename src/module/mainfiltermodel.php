@@ -10,7 +10,7 @@ namespace NsC3MainFilterModule;
 
 include_once(dirname(__FILE__) . '/../framework/modulemodel.php');
 
-class MainFilterModel extends \NsC3Framework\ModuleModel {
+class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 
 	/*
 	 * the constructor

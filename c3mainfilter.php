@@ -1,5 +1,5 @@
 <?php
-/*
+/* 
  * This module is used to display a stepped filter in category pages to show all products meeting the filter requirement
  * @author Schnepp David <david.schnepp@schneppd.com>
  * @since v0.1 2016/09/17

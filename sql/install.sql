@@ -49,3 +49,11 @@ CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_member` AS SELECT 
  id_filter_selection, id_filter_selection_group
  FROM `PREFIX_c3_mainfilter_selection_group_member`
  ORDER BY id_filter_selection_group, id_filter_selection;
+CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_part_informations` AS SELECT DISTINCT
+ sp.id_filter_selection AS id_filter_selection, sp.id_feature AS id_feature, sp.id_feature_value AS id_feature_value, sp.order_part AS order_part
+ ,fl.id_lang AS id_lang, fl.name AS name_feature
+ ,fvl.value AS name_feature_value
+ FROM `PREFIX_c3_mainfilter_selection_part` AS sp
+ INNER JOIN `PREFIX_feature_lang` AS fl ON (fl.id_feature = sp.id_feature)
+ INNER JOIN `PREFIX_feature_value_lang` AS fvl ON (fvl.id_feature_value = sp.id_feature_value AND fvl.id_lang = fl.id_lang)
+ ORDER BY id_lang, id_filter_selection, order_part;

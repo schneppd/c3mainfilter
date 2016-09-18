@@ -41,3 +41,7 @@ CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group` AS SELECT DISTINC
  id_filter_selection_group, name
  FROM `PREFIX_c3_mainfilter_selection_group`
  ORDER BY tcreation;
+CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_shelf` AS SELECT DISTINCT
+ id_filter_selection_group, id_category
+ FROM `PREFIX_c3_mainfilter_selection_group_shelf`
+ ORDER BY id_category, tcreation, id_filter_selection_group;

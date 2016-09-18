@@ -74,9 +74,10 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 			$id_filter_selection = (int) $groupMember['id_filter_selection'];
 			$sqlFilterParts = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE id_filter_selection = '.(int) $id_filter_selection.' AND id_lang = '. (int) $id_lang;
 			$filterParts = $this->database->getDatabaseInstance()->executeS($sqlFilterParts);
-			for($i = 0; $i < count($filterParts); $i++) {
+			//must add recursive values
+			/*for($i = 0; $i < count($filterParts); $i++) {
 				$this->appendFilterPart($i, $filterParts, $res);
-			}
+			}*/
 		}
 		return $res;
 	}

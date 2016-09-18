@@ -76,12 +76,13 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
 			$name = (string) $filterGroup['name'];
 			
+			/* todo: separate generation in steps files
 			$content = array('id_filter_selection_group' => $id_filter_selection_group, 'name' => $name);
 			$content['values'] = $this->model->getAllFilterGroupSelectionValues($id_filter_selection_group, $id_lang);
 			
 			$file = 'filter-' . $id_filter_selection_group . '.json';
 			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
-			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);
+			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);*/
 		}
 	}
 	

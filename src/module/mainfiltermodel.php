@@ -55,7 +55,7 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 	 * @return mixed[] the list of categories with a defined filter group
 	 */
 	public function getFilterGroups() {
-		$sql = 'SELECT id_filter_selection_group, name FROM `' . $this->database->getDatabasePrefix() . 'c3_mainfilter_selection_group`';
+		$sql = 'SELECT id_filter_selection_group, name FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_group`';
 		return $this->database->getDatabaseInstance()->executeS($sql);
 	}
 	

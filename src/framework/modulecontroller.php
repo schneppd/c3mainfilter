@@ -182,5 +182,16 @@ abstract class ModuleController {
 		return ModuleIO::existDirectory($dir);
 	}
 	
+	/*
+	 * empty the module's cache directory
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 */
+	public static function emptyModuleCache() {
+		$dir = static::$moduleInformations->getModuleCachePath();
+		ModuleIO::emptyDirectory($dir);
+	}
+	
 
 }

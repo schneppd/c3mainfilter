@@ -164,15 +164,15 @@ class C3MainFilter extends Module {
 	}
 	
 	/*
-	* Regenerate each category filter caches
+	* Regenerate all filter caches
 	* 
 	* @author Schnepp David
 	* @since v0.1 2016/09/17
 	* @todo create functionalities
 	*/
 	protected function regenerateFiltersCaches() {
-		$maxProductPerCategoryFilterCall = (int)Tools::getValue('C3MAINFILTER_NB');
 		$id_lang = (int) $this->context->language->id;
+		$this->controller->regenerateFiltersAndCategoriesCaches($id_lang);
 	}
 	
 	/*

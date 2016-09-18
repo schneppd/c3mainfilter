@@ -28,5 +28,61 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		parent::__construct($infos);
 		$this->model = new MainFilterModel($databaseConnection);
 	}
+	
+	/*
+	 * regenerates cache files for:
+	 * - categories where to display a filter
+	 * - the data to expose as choices for each filter
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @param int $id_lang the lang in current call context, used to select the name value to use
+	 */
+	public function regenerateFiltersAndCategoriesCaches($id_lang) {
+		static::emptyModuleCache();
+		$this->generateCategoriesCacheFiles();
+		$this->generateFiltersCacheFiles($id_lang);
+	}
+	
+	/*
+	 * generate cache files for categories with a filter
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @param array $categoriesWithFilters the list of category with a filter defined
+	 */
+	private function generateCategoriesCacheFiles() {
+		$categoriesWithFilters = $this->model->getCategoriesWithFilters();
+		foreach($categoriesWithFilters as $category) {
+			$id_category = (int) $category['id_category'];
+			$id_filter_selection_group = (int) $category['id_filter_selection_group'];
+			$file = 'category-' . $id_category . '.json';
+			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
+			$content = array('id_filter_selection_group' => $id_filter_selection_group);
+			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);
+		}
+	}
 
+	/*
+	 * generate cache files for all filter groups
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @param array $categoriesWithFilters the list of category with a filter defined
+	 */
+	private function generateFiltersCacheFiles(&$id_lang) {
+		$filterGroups = $this->model->getFilterGroups();
+		foreach($filterGroups as $filterGroup) {
+			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
+			$name = (string) $filterGroup['name'];
+			
+			$content = array('id_filter_selection_group' => $id_filter_selection_group, 'name' => $name);
+			$content['values'] = $this->model->getAllFilterGroupSelectionValues($id_filter_selection_group, $id_lang);
+			
+			$file = 'filter-' . $id_filter_selection_group . '.json';
+			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
+			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);
+		}
+	}
+	
 }

@@ -35,4 +35,39 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		return $this->database->getDatabaseInstance()->executeS($sql);
 	}
 
+	/*
+	 * query and return the list of categories with a defined filter group
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @return mixed[] the list of categories with a defined filter group
+	 */
+	public function getCategoriesWithFilters() {
+		$sql = 'SELECT id_filter_selection_group, id_category FROM `' . $this->database->getDatabasePrefix() . 'c3_mainfilter_selection_group_shelf`';
+		return $this->database->getDatabaseInstance()->executeS($sql);
+	}
+	
+	/*
+	 * query and return the list of categories with a defined filter group
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @return mixed[] the list of categories with a defined filter group
+	 */
+	public function getFilterGroups() {
+		$sql = 'SELECT id_filter_selection_group, name FROM `' . $this->database->getDatabasePrefix() . 'c3_mainfilter_selection_group`';
+		return $this->database->getDatabaseInstance()->executeS($sql);
+	}
+	
+	/*
+	 * query and return the list of all possible selection values for given filter group
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/18
+	 * @return mixed[] the list of all selection values (multi dimension array) for given filter group
+	 */
+	public function getAllFilterGroupSelectionValues(&$id_filter_selection_group, &$id_lang) {
+		$sql = 'SELECT id_filter_selection_group, name FROM `' . $this->database->getDatabasePrefix() . 'c3_mainfilter_selection_group`';
+		return $this->database->getDatabaseInstance()->executeS($sql);
+	}
 }

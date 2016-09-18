@@ -45,3 +45,7 @@ CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_shelf` AS SELECT D
  id_filter_selection_group, id_category
  FROM `PREFIX_c3_mainfilter_selection_group_shelf`
  ORDER BY id_category, tcreation, id_filter_selection_group;
+CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_member` AS SELECT DISTINCT
+ id_filter_selection, id_filter_selection_group
+ FROM `PREFIX_c3_mainfilter_selection_group_member`
+ ORDER BY id_filter_selection_group, id_filter_selection;

@@ -68,7 +68,7 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 	 */
 	public function getAllFilterGroupSelectionValues(&$id_filter_selection_group, &$id_lang) {
 		$res = array();
-		$sqlGroupMembers = 'SELECT id_filter_selection FROM `' . $this->database->getDatabasePrefix() . 'c3_mainfilter_selection_group_member` WHERE id_filter_selection_group = '.(int) $id_filter_selection_group;
+		$sqlGroupMembers = 'SELECT id_filter_selection FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_group_member` WHERE id_filter_selection_group = '.(int) $id_filter_selection_group;
 		$groupMembers = $this->database->getDatabaseInstance()->executeS($sqlGroupMembers);
 		foreach($groupMembers as $groupMember) {
 			$id_filter_selection = (int) $groupMember['id_filter_selection'];

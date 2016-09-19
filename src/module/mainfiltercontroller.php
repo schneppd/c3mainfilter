@@ -73,12 +73,9 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 	private function generateFilterGroupsCacheFiles(&$id_lang) {
 		$filterGroups = $this->model->getFilterGroups();
 		foreach($filterGroups as $filterGroup) {
-			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
-			$number_step = (int) $filterGroup['number_step'];
-			
 			$filterGroupRootChoices = $this->generateFilterGroupRootFile($filterGroup, $id_lang);
 			
-			$this->generateFilterGroupSelectionFileParts($id_filter_selection_group, $number_step, $filters, $filterGroupRootChoices);
+			$this->generateFilterGroupSelectionPartsFiles($filterGroup, $filterGroupRootChoices, $id_lang);
 		}
 	}
 	
@@ -112,28 +109,22 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		return $filterGroupRootChoices;
 	}
 	
-	private function generateFilterGroupSelectionFileParts(&$id_filter_selection_group, &$number_step, &$filters, &$filterGroupRootChoices, $index = 0, $selection = null) {
-		$filterGroups = $this->model->getFilterGroups();
-		foreach($filterGroups as $filterGroup) {
-			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
-			$nameFilterGroup = (string) $filterGroup['name'];
-			$number_step = (int) $filterGroup['number_step'];
-			
-			$filters = $this->model->getFiltersInFilterGroupToArray($id_filter_selection_group);
-			$filterGroupRootChoices = $this->model->getFilterGroupRootChoices($id_filter_selection_group, $id_lang, $filters);
-			
-			$file = 'filter-' . $id_filter_selection_group . '.json';
-			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
-			$filterGroupData = array();
-			$filterGroupData['id_filter_selection_group'] = $id_filter_selection_group;
-			$filterGroupData['name'] = $nameFilterGroup;
-			$filterGroupData['number_step'] = $number_step;
-			$filterGroupData['options'] = $filterGroupRootChoices;
-			
-			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($filterGroupData, $filePath);
-			$this->generateFilterGroupRootFiles();
-			
-			$this->generateFilterGroupSelectionFileParts($id_filter_selection_group, $number_step, $filters, $filterGroupRootChoices);
+	private function generateFilterGroupSelectionPartsFiles(&$filterGroup, &$filterGroupRootChoices, &$id_lang) {
+		$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
+		foreach($filterGroupRootChoices as $id_feature => $data_feature) {
+			foreach($data_feature['values'] as $id_feature_value => $data_feature_value) {
+				$file = 'filter-' . $id_filter_selection_group . '_' . $id_feature . '-' . $id_feature_value;
+				$this->generateFilterGroupSelectionPartFiles($id_lang, $filterGroup, $file, $data_feature_value['path']);
+			}
 		}
+	}
+	
+	private function generateFilterGroupSelectionPartFiles(&$id_lang, &$filterGroup, $file_start, $filters, $current_step = 0) {
+		$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
+		$number_step = (int) $filterGroup['number_step'];
+		/* todo recursive generation
+		if($current_step++ < $number_step) {
+			$this->generateFilterGroupSelectionPartFiles($id_lang, $filterGroup, $file, $data_feature_value['path']);
+		}*/
 	}
 }

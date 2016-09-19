@@ -75,6 +75,8 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		foreach($filterGroups as $filterGroup) {
 			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
 			$name = (string) $filterGroup['name'];
+			$number_step = (int) $filterGroup['number_step'];
+			$filters = $this->model->getFiltersInFilterGroup($id_filter_selection_group);
 			
 			/* todo: separate generation in steps files
 			$content = array('id_filter_selection_group' => $id_filter_selection_group, 'name' => $name);

@@ -74,32 +74,28 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		return $res;
 	}
 	
-	public function getFilterGroupRootChoices(&$id_filter_selection_group, &$id_lang, &$filter_selections) {
+	public function getFilterGroupRootChoices(&$id_lang, &$filter_selections) {
 		$res = array();
 		foreach($filter_selections as $id_filter_selection){
 			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = 0 AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
 			$choice = $this->database->getDatabaseInstance()->executeS($sql);
 			$id_feature = (int) $choice['id_feature'];
 			if (!array_key_exists($id_feature, $res)) {
-				//first feature occurrence
 				$res[$id_feature] = array();
 				$name_feature = (string)$choice['name_feature'];
 				$res[$id_feature]['name'] = $name_feature;
 				$res[$id_feature]['values'] = array();
-				$id_feature_value = (int) $choice['id_feature_value'];
+				
+			}
+			
+			$id_feature_value = (int) $choice['id_feature_value'];
+			if (!array_key_exists($id_feature_value, $res[$id_feature]['values'][$id_feature_value])) {
 				$name_feature_value = (string) $choice['name_feature_value'];
 				$res[$id_feature]['values'][$id_feature_value] = array();
 				$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
+				$res[$id_feature]['values'][$id_feature_value]['path'] = array();
 			}
-			else {
-				$id_feature_value = (int) $choice['id_feature_value'];
-				//test if option->value already exists
-				if (!array_key_exists($id_feature_value, $res[$id_feature]['values'][$id_feature_value])) {
-					$name_feature_value = (string) $choice['name_feature_value'];
-					$res[$id_feature]['values'][$id_feature_value] = array();
-					$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
-				}
-			}
+			array_push($res[$id_feature]['values'][$id_feature_value]['path'], (int) $id_filter_selection);
 		}
 		return $res;
 	}

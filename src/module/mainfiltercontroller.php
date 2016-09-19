@@ -41,7 +41,7 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 	public function regenerateFiltersAndCategoriesCaches($id_lang) {
 		static::emptyModuleCache();
 		$this->generateCategoriesCacheFiles();
-		$this->generateFiltersCacheFiles($id_lang);
+		$this->generateFilterGroupsCacheFiles($id_lang);
 	}
 	
 	/*
@@ -70,22 +70,29 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 	 * @since 2016/09/18
 	 * @param array $categoriesWithFilters the list of category with a filter defined
 	 */
-	private function generateFiltersCacheFiles(&$id_lang) {
+	private function generateFilterGroupsCacheFiles(&$id_lang) {
 		$filterGroups = $this->model->getFilterGroups();
 		foreach($filterGroups as $filterGroup) {
 			$id_filter_selection_group = (int) $filterGroup['id_filter_selection_group'];
-			$name = (string) $filterGroup['name'];
+			$nameFilterGroup = (string) $filterGroup['name'];
 			$number_step = (int) $filterGroup['number_step'];
-			$filters = $this->model->getFiltersInFilterGroup($id_filter_selection_group);
 			
-			/* todo: separate generation in steps files
-			$content = array('id_filter_selection_group' => $id_filter_selection_group, 'name' => $name);
-			$content['values'] = $this->model->getAllFilterGroupSelectionValues($id_filter_selection_group, $id_lang);
+			$filters = $this->model->getFiltersInFilterGroupToArray($id_filter_selection_group);
+			$filterGroupRootChoices = $this->model->getFilterGroupRootChoices($id_filter_selection_group, $id_lang, $filters);
 			
 			$file = 'filter-' . $id_filter_selection_group . '.json';
 			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
-			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);*/
+			$filterGroupData = array();
+			$filterGroupData['id_filter_selection_group'] = $id_filter_selection_group;
+			$filterGroupData['name'] = $nameFilterGroup;
+			$filterGroupData['number_step'] = $number_step;
+			$filterGroupData['options'] = $filterGroupRootChoices;
+			
+			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($filterGroupData, $filePath);
+			$this->generateFilterGroupRootFiles();
+			
 		}
 	}
+	
 	
 }

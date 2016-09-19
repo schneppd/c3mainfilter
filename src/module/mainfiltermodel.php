@@ -63,37 +63,44 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		$sql = 'SELECT id_filter_selection FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_group_filters` WHERE id_filter_selection_group = '. (int) $id_filter_selection_group;
 		return $this->database->getDatabaseInstance()->executeS($sql);
 	}
-	/*
-	 * query and return the list of all possible selection values for given filter group
-	 * 
-	 * @author Schnepp David
-	 * @since 2016/09/18
-	 * @return mixed[] the list of all selection values (multi dimension array) for given filter group
-	 */
-	public function getAllFilterGroupSelectionValues(&$id_filter_selection_group, &$id_lang) {
+	
+	public function getFiltersInFilterGroupToArray(&$id_filter_selection_group) {
+		$filters = $this->getFiltersInFilterGroup($id_filter_selection_group);
 		$res = array();
-		$sqlGroupMembers = 'SELECT id_filter_selection FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_group_member` WHERE id_filter_selection_group = '.(int) $id_filter_selection_group;
-		$groupMembers = $this->database->getDatabaseInstance()->executeS($sqlGroupMembers);
-		foreach($groupMembers as $groupMember) {
-			$id_filter_selection = (int) $groupMember['id_filter_selection'];
-			$sqlFilterParts = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE id_filter_selection = '.(int) $id_filter_selection.' AND id_lang = '. (int) $id_lang;
-			$filterParts = $this->database->getDatabaseInstance()->executeS($sqlFilterParts);
-			//must add recursive values
-			/*for($i = 0; $i < count($filterParts); $i++) {
-				$this->appendFilterPart($i, $filterParts, $res);
-			}*/
+		foreach($filters as $filter){
+			$id_filter_selection = (int) $filter['id_filter_selection'];
+			array_push($res, $id_filter_selection);
 		}
 		return $res;
 	}
 	
-	private function appendFilterPart(&$index, &$filterParts, &$currentContainer) {
-		$id_feature = (int) $filterParts[$index]['id_feature'];
-		$id_feature_value = (int) $filterParts[$index]['id_feature_value'];
-		//create new branch if it doesn't exist
-		if (!array_key_exists($id_feature, $currentContainer)) {
-			$name_feature = $filterParts[$index]['name_feature'];
-			$currentContainer[$id_feature] = array('name_feature' => $name_feature, 'values' => array());
+	public function getFilterGroupRootChoices(&$id_filter_selection_group, &$id_lang, &$filter_selections) {
+		$res = array();
+		foreach($filter_selections as $id_filter_selection){
+			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = 0 AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
+			$choice = $this->database->getDatabaseInstance()->executeS($sql);
+			$id_feature = (int) $choice['id_feature'];
+			if (!array_key_exists($id_feature, $res)) {
+				//first feature occurrence
+				$res[$id_feature] = array();
+				$name_feature = (string)$choice['name_feature'];
+				$res[$id_feature]['name'] = $name_feature;
+				$res[$id_feature]['values'] = array();
+				$id_feature_value = (int) $choice['id_feature_value'];
+				$name_feature_value = (string) $choice['name_feature_value'];
+				$res[$id_feature]['values'][$id_feature_value] = array();
+				$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
+			}
+			else {
+				$id_feature_value = (int) $choice['id_feature_value'];
+				//test if option->value already exists
+				if (!array_key_exists($id_feature_value, $res[$id_feature]['values'][$id_feature_value])) {
+					$name_feature_value = (string) $choice['name_feature_value'];
+					$res[$id_feature]['values'][$id_feature_value] = array();
+					$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
+				}
+			}
 		}
-		$currentContainer[$bla] = 12;
+		return $res;
 	}
 }

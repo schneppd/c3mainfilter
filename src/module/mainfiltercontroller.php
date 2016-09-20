@@ -87,6 +87,16 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		}
 	}
 	
+	/*
+	 * create the final cache file of provided filtergroup part
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param array $filterGroup The filterGroup's data
+	 * @param string $fileName the name of the file to create
+	 * @param array $options All available choices for current part
+	 * @param int $step for which step of filtergroup the file is created
+	 */
 	private function writeFilterGroupsCacheFiles(&$filterGroup, &$fileName, &$options, &$step) {
 		$file = $fileName . '.json';
 		$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
@@ -102,6 +112,14 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		
 	}
 	
+	/*
+	 * process given choices map to removes the path data (for final json cache creation)
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param array $filterGroupChoices map of each available choice
+	 * @return array processed choices map
+	 */
 	private function removePathFromChoices($filterGroupChoices) {
 		foreach($filterGroupChoices as $id_feature => $data_feature) {
 			foreach($data_feature['values'] as $id_feature_value => $data_feature_value) {
@@ -111,6 +129,17 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		return $filterGroupChoices;
 	}
 	
+	/*
+	 * recursively browse the given filterGroup choice tree and create corresponding cache file parts
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param array $filterGroup The filterGroup's data
+	 * @param array $filterGroupChoices all id_filter_selection remaining for current choice branch
+	 * @param int $id_lang the lang for selecting feature and feature_value description
+	 * @param string $fileStart file name of the previous branch
+	 * @param int $current_step for which step of filtergroup the file is created
+	 */
 	private function generateFilterGroupSelectionPartsFiles(&$filterGroup, &$filterGroupChoices, &$id_lang, $fileStart, $current_step) {
 		foreach($filterGroupChoices as $id_feature => $data_feature) {
 			foreach($data_feature['values'] as $id_feature_value => $data_feature_value) {

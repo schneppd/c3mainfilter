@@ -59,11 +59,27 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		return $this->database->getDatabaseInstance()->executeS($sql);
 	}
 	
+	/*
+	 * Query and return the list of all filter selection in given filter group
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param int $id_filter_selection_group the filter group which selections we want
+	 * @return mixed[] the list of filter selection linked to the filter group
+	 */
 	public function getFiltersInFilterGroup(&$id_filter_selection_group) {
 		$sql = 'SELECT id_filter_selection FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_group_filters` WHERE id_filter_selection_group = '. (int) $id_filter_selection_group;
 		return $this->database->getDatabaseInstance()->executeS($sql);
 	}
 	
+	/*
+	 * Query and return the list of all filter selection in given filter group (in an array)
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param int $id_filter_selection_group the filter group which selections we want
+	 * @return mixed[] the list of filter selection linked to the filter group
+	 */
 	public function getFiltersInFilterGroupToArray(&$id_filter_selection_group) {
 		$filters = $this->getFiltersInFilterGroup($id_filter_selection_group);
 		$res = array();
@@ -74,10 +90,20 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		return $res;
 	}
 	
-	public function getFilterGroupChoices(&$id_lang, &$filter_selections, &$order_part) {
+	/*
+	 * Query and return each choice possible for given FilterGroup step
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/09/20
+	 * @param int $id_lang the lang for feature and feature_value description
+	 * @param array $filter_selections all the id_filter_selection remaining for given choice step
+	 * @param int $choice_step the step of given FilterGroup we want
+	 * @return mixed[] the tree map of each possibilities
+	 */
+	public function getFilterGroupChoices(&$id_lang, &$filter_selections, &$choice_step) {
 		$res = array();
 		foreach($filter_selections as $id_filter_selection){
-			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = '. (int) $order_part .' AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
+			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = '. (int) $choice_step .' AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
 			$choices = $this->database->getDatabaseInstance()->executeS($sql);
 			foreach($choices as $choice){
 				$id_feature = (string) $choice['id_feature'];

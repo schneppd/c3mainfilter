@@ -11,7 +11,7 @@ INSERT INTO ps_c3_mainfilter_selection_part(id_filter_selection, id_feature, id_
 , (4, 73, 556, 0), (4, 74, 564, 1), (4, 75, 604, 2), (4, 76, 724, 3), (4, 10, 51, 4)
 ;
 --create groups
-INSERT INTO ps_c3_mainfilter_selection_group(name) VALUES ('group1'), ('group2'), ('group3');
+INSERT INTO ps_c3_mainfilter_selection_group(name, number_step) VALUES ('group1', 5), ('group2', 5), ('group3', 5);
 --add filter to groups
 INSERT INTO ps_c3_mainfilter_selection_group_member(id_filter_selection_group, id_filter_selection) VALUES
  (1, 1), (1, 2), (2, 3), (3, 4), (3, 1);

@@ -74,10 +74,10 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		return $res;
 	}
 	
-	public function getFilterGroupRootChoices(&$id_lang, &$filter_selections) {
+	public function getFilterGroupChoices(&$id_lang, &$filter_selections, &$order_part) {
 		$res = array();
 		foreach($filter_selections as $id_filter_selection){
-			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = 0 AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
+			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = '. (int) $order_part .' AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
 			$choice = $this->database->getDatabaseInstance()->executeS($sql);
 			$id_feature = (int) $choice['id_feature'];
 			if (!array_key_exists($id_feature, $res)) {

@@ -78,10 +78,12 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 			$filters = $this->model->getFiltersInFilterGroupToArray($id_filter_selection_group);
 			$fileStart = 'filter-' . $id_filter_selection_group;
 			
-			$filterGroupRootChoices = $this->model->getFilterGroupChoices($id_lang, $filters, 0);
-			$this->writeFilterGroupsCacheFiles($filterGroup, $fileStart, $filterGroupRootChoices, 0);
+			$current_step = 0;
+			$filterGroupRootChoices = $this->model->getFilterGroupChoices($id_lang, $filters, $current_step);
+			$this->writeFilterGroupsCacheFiles($filterGroup, $fileStart, $filterGroupRootChoices, $current_step);
 			
-			$this->generateFilterGroupSelectionPartsFiles($filterGroup, $filterGroupRootChoices, $id_lang, $fileStart, 1);
+			$current_step++;
+			$this->generateFilterGroupSelectionPartsFiles($filterGroup, $filterGroupRootChoices, $id_lang, $fileStart, $current_step);
 		}
 	}
 	
@@ -95,16 +97,18 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 			$filterGroupData['number_step'] = (int) $filterGroup['number_step'];
 		}
 		$filterGroupData['options'] = $this->removePathFromChoices($options);
+		//$filterGroupData['options'] = $options;
 		\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($filterGroupData, $filePath);
+		
 	}
 	
-	private function removePathFromChoices($filterGroupRootChoices) {
-		foreach($filterGroupRootChoices as $data_feature) {
-			foreach($data_feature['values'] as $data_feature_value) {
-				unset($data_feature_value['path']);
+	private function removePathFromChoices($filterGroupChoices) {
+		foreach($filterGroupChoices as $id_feature => $data_feature) {
+			foreach($data_feature['values'] as $id_feature_value => $data_feature_value) {
+				unset($filterGroupChoices[$id_feature]['values'][$id_feature_value]['path']);
 			}
 		}
-		return $filterGroupRootChoices;
+		return $filterGroupChoices;
 	}
 	
 	private function generateFilterGroupSelectionPartsFiles(&$filterGroup, &$filterGroupChoices, &$id_lang, $fileStart, $current_step) {
@@ -116,7 +120,7 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 				$newFilterGroupChoices = $this->model->getFilterGroupChoices($id_lang, $filters, $current_step);
 				$this->writeFilterGroupsCacheFiles($filterGroup, $newFileStart, $newFilterGroupChoices, $current_step);
 				
-				$next_step = $current_step++;
+				$next_step = $current_step + 1;
 				$number_step = (int) $filterGroup['number_step'];
 				if($next_step < $number_step) {
 					$this->generateFilterGroupSelectionPartsFiles($filterGroup, $newFilterGroupChoices, $id_lang, $newFileStart, $next_step);

@@ -78,24 +78,26 @@ class MainFilterModel extends \NsC3MainFilterFramework\ModuleModel {
 		$res = array();
 		foreach($filter_selections as $id_filter_selection){
 			$sql = 'SELECT id_feature, id_feature_value, name_feature, name_feature_value FROM `' . $this->database->getDatabasePrefix() . 'vc3_mainfilter_selection_part_informations` WHERE order_part = '. (int) $order_part .' AND id_filter_selection = '. (int) $id_filter_selection . ' AND id_lang = ' . (int) $id_lang;
-			$choice = $this->database->getDatabaseInstance()->executeS($sql);
-			$id_feature = (int) $choice['id_feature'];
-			if (!array_key_exists($id_feature, $res)) {
-				$res[$id_feature] = array();
-				$name_feature = (string)$choice['name_feature'];
-				$res[$id_feature]['name'] = $name_feature;
-				$res[$id_feature]['values'] = array();
-				
+			$choices = $this->database->getDatabaseInstance()->executeS($sql);
+			foreach($choices as $choice){
+				$id_feature = (string) $choice['id_feature'];
+				if (!isset($res[$id_feature])) {
+					$res[$id_feature] = array();
+					$name_feature = (string)$choice['name_feature'];
+					$res[$id_feature]['name'] = $name_feature;
+					$res[$id_feature]['values'] = array();
+
+				}
+
+				$id_feature_value = $choice['id_feature_value'];
+				if (!array_key_exists($id_feature_value, $res[$id_feature]['values'][$id_feature_value])) {
+					$name_feature_value = (string) $choice['name_feature_value'];
+					$res[$id_feature]['values'][$id_feature_value] = array();
+					$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
+					$res[$id_feature]['values'][$id_feature_value]['path'] = array();
+				}
+				array_push($res[$id_feature]['values'][$id_feature_value]['path'], (int) $id_filter_selection);
 			}
-			
-			$id_feature_value = (int) $choice['id_feature_value'];
-			if (!array_key_exists($id_feature_value, $res[$id_feature]['values'][$id_feature_value])) {
-				$name_feature_value = (string) $choice['name_feature_value'];
-				$res[$id_feature]['values'][$id_feature_value] = array();
-				$res[$id_feature]['values'][$id_feature_value]['name'] = $name_feature_value;
-				$res[$id_feature]['values'][$id_feature_value]['path'] = array();
-			}
-			array_push($res[$id_feature]['values'][$id_feature_value]['path'], (int) $id_filter_selection);
 		}
 		return $res;
 	}

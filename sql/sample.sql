@@ -18,3 +18,8 @@ INSERT INTO ps_c3_mainfilter_selection_group_member(id_filter_selection_group, i
 --add to categories
 INSERT INTO ps_c3_mainfilter_selection_group_shelf(id_filter_selection_group, id_category) VALUES 
  (1, 450), (2, 90);
+
+--delete data if problem
+DELETE FROM ps_c3_mainfilter_selection_part;
+DELETE FROM ps_c3_mainfilter_selection_group;
+ALTER TABLE ps_c3_mainfilter_selection_group AUTO_INCREMENT = 1;

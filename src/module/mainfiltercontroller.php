@@ -158,4 +158,36 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		}
 	}
 	
+	/*
+	 * used to tell if the module should add mainfilter.js to the frontend js dependancies
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/10/29
+	 * @param int $id_category_ext the category to test
+	 * @return boolean Y/N does it exists
+	 */
+	public function existsFilterFile(&$id_category_ext) {
+		$id_category = (int) $id_category_ext;
+		if($id_category > 0) {
+			$file = 'category-' . $id_category . '.json';
+			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
+			return \NsC3MainFilterFramework\ModuleIO::existFile($filePath);
+		}
+		return false;//no category page is used
+	}
+	
+	/*
+	 * used to get the corresponding first filter json data file
+	 * 
+	 * @author Schnepp David
+	 * @since 2016/10/29
+	 * @param int $id_category the category to get the data from
+	 * @return string the complete path to the json file
+	 */
+	public function getFilterFileData(&$id_category) {
+		$file = 'category-' . $id_category . '.json';
+		$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
+		return $filePath;
+	}
+	
 }

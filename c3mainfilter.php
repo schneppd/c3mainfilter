@@ -123,7 +123,12 @@ class C3MainFilter extends Module {
 	* @todo test if filter to display in category page
 	*/
 	public function hookHeader($params) {
-		$this->context->controller->addCSS(($this->_path) . 'views/css/c3mainfilter.css', 'all');
+		$id_category = (int) Context::getContext()->category->id_category;
+		if($this->controller->existsFilterFile($id_category)) {
+			$this->context->controller->addCSS(($this->_path) . 'views/css/c3mainfilter.css', 'all');
+			$this->context->controller->addJS($this->controller->getFilterFileData($id_category));
+			$this->context->controller->addJS(($this->_path) . 'views/js/c3mainfilter.js');
+		}
 	}
 
 	/*

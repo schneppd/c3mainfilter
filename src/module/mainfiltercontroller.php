@@ -45,7 +45,7 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 	}
 	
 	/*
-	 * generate cache files for categories with a filter
+	 * generate cache files for the categories with a filter attached
 	 * 
 	 * @author Schnepp David
 	 * @since 2016/09/18

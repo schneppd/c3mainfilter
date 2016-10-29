@@ -58,8 +58,10 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 			$id_filter_selection_group = (int) $category['id_filter_selection_group'];
 			$file = 'category-' . $id_category . '.json';
 			$filePath = static::$moduleInformations->getModuleCacheFilePath($file);
-			$content = array('id_filter_selection_group' => $id_filter_selection_group);
-			\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($content, $filePath);
+			$rawContent = array('id_filter_selection_group' => $id_filter_selection_group);
+			$json = json_encode($rawContent);
+			$txt = 'var c3MainFilterDataStart = ' . $json . ';';
+			\NsC3MainFilterFramework\ModuleIO::writeStringToFile($txt, $filePath);
 		}
 	}
 
@@ -107,8 +109,10 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 			$filterGroupData['number_step'] = (int) $filterGroup['number_step'];
 		}
 		$filterGroupData['options'] = $this->removePathFromChoices($options);
+		$json = json_encode($filterGroupData);
+		$txt = 'var c3MainFilterDataPart = ' . $json . ';';
 		//$filterGroupData['options'] = $options;
-		\NsC3MainFilterFramework\ModuleIO::writeArrayToJsonFile($filterGroupData, $filePath);
+		\NsC3MainFilterFramework\ModuleIO::writeStringToFile($txt, $filePath);
 		
 	}
 	

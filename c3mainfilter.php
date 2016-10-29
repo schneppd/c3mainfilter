@@ -36,7 +36,7 @@ class C3MainFilter extends Module {
 		//setup this module's basic informations
 		$this->name = 'c3mainfilter';
 		$this->tab = 'front_office_features';
-		$this->version = '0.1.0';
+		$this->version = '0.2.0';
 		$this->author = 'Schnepp David';
 		$this->need_instance = 0;
 

@@ -1,0 +1,18 @@
+http://www.really-free.dev/
+
+curl -i -X POST -H 'Content-Type: application/json' -d '{"action": "get_available_choices", "ajax": "true"}' http://www.really-free.dev/c3mainfilter?rand=1465738370687
+
+curl -i -X GET -H 'Content-Type: application/json' -d '{"action": "get_available_choices", "ajax": "true"}' http://www.really-free.dev/c3mainfilter?rand=1465738370687
+
+curl -i -X GET -H 'Content-Type: application/json' -d '{"action": "availableChoices", "ajax": "true"}' http://www.really-free.dev/c3mainfilter?rand=1465738370687
+
+C3MainFilterModuleFrontController
+curl -i -X POST -H 'Content-Type: application/json' -d '{"action": "get_available_choices", "ajax": "true"}' "http://www.really-free.dev/c3mainfilter?rand=1465738370687"
+
+curl -i -X GET -H 'Content-Type: application/json' -d '{"method": "myMethod", "ajax": "true"}' http://www.really-free.dev/modules/c3mainfilter/controllers/front/filter.php
+
+var formPost = document.createElement('form');
+formPost.method = 'POST';
+formPost.action = 'http://www.really-free.dev/c3mainfilter?rand=1465738370687';
+document.body.appendChild(formPost);
+formPost.submit();

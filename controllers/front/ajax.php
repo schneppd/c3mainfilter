@@ -59,10 +59,7 @@ class C3MainFilterAjaxModuleFrontController extends ModuleFrontController {
 		if(Tools::isSubmit('id_filter_selection_group'))
 			$id_filter_selection_group = (int) Tools::getValue('id_filter_selection_group');
 		
-		$file = '';
-		if($this->isSelectionProvided($rawSelection)) {
-			//process choice
-		}
+		$file = $this->getSelectionChoiceFileName($rawSelection);
 
 		if($id_filter_selection_group > 0) {
 			$file = 'filter-' . $id_filter_selection_group . $file . '.json';
@@ -85,6 +82,30 @@ class C3MainFilterAjaxModuleFrontController extends ModuleFrontController {
 			return false;
 		
 		return true;
+	}
+	
+	/* 
+	 * tells if selection data is provided
+	 * @author Schnepp David <david.schnepp@schneppd.com>
+	 * @since v0.2 2016/10/30
+	 * @arg string $rawSelection selection data provided
+	 * @return string file name part or empty string if no selection provided
+	 */
+	protected function getSelectionChoiceFileName(&$rawSelection) {
+		$file = '';
+		if($this->isSelectionProvided($rawSelection)) {
+			//process choice
+			preg_match_all('/((\d+)-(\d+))/', $rawSelection, $matchs);//get choices with string input ex: 3_73-556_74-564 will give: 73(id_feature),556(id_feature_value), 74(id_feature),564(id_feature_value)
+			if(count($matchs) > 0){
+				foreach ($matchs[0] as $key => $match){
+					//push [id_attribute_group, id_attribute, txt_input]
+					$id_feature = $matchs[2][$key];
+					$id_feature_value = $matchs[3][$key];
+					$file .= '_' . $id_feature . '-' . $id_feature_value;
+				}
+			}
+		}
+		return $file;
 	}
 	
 }

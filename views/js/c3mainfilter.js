@@ -17,7 +17,7 @@ function c3_setupMainFilter(){
 	if(c3_isDataAvailableToSetupMainFilter) {
 		console.log('data available');
 		c3_createMainFilterCoreHtmlElements();
-		c3_getMainFilterStartSelectionHtmlElements();
+		c3_getMainFilterStartSelectionJsonData();
 	}
 	else
 		console.log('C3MainFilter Module error: data not provided to setup html !!!');
@@ -61,9 +61,9 @@ function c3_getDataAvailableToSetupMainFilter(){
  * @since v0.2 2016/10/30
  */
 function c3_createMainFilterCoreHtmlElements(){
-	var mainFilter = $("<div id='c3MainFilter' class='hidden'></div>");
+	var mainFilter = $("<div id='c3MainFilter' class='hide'></div>");
 	var form = $('<form action="' + c3_getMainFilterWebserviceUrl() + '" id="c3MainFilterForm"></form>');
-	var legend = 'choose something!';
+	var legend = 'place holder';
 	var fieldset = $('<fieldset><legend>' + legend + '</legend><div class="interactionElements"></div></fieldset>');
 	
 	form.append(fieldset);
@@ -88,25 +88,46 @@ function c3_getMainFilterWebserviceUrl(){
  * @author Schnepp David
  * @since v0.2 2016/10/30
  */
-function c3_getMainFilterStartSelectionHtmlElements(){
+function c3_getMainFilterStartSelectionJsonData(){
+	var queryData = {
+		action: 'get_available_choices'
+		,ajax: true
+	};
+	c3_makeAjaxCallAndProcessResponse(queryData, c3_showFilterChoices);
+}
+
+/*
+ * fetch data and calls successFunction to process it
+ * 
+ * @author Schnepp David
+ * @since v0.2 2016/10/30
+ * @param queryData param for the call
+ * @param successFunction function to call if success fetch
+ */
+function c3_makeAjaxCallAndProcessResponse(queryData, successFunction){
 	var formUrl = c3_getMainFilterWebserviceUrl() + '?rand=' + Math.floor((Math.random() * 1000) + 500) + new Date().getTime() + Math.floor((Math.random() * 1000) + 500);
-	var moduleAction = 'get_available_choices';
+	
 	var query = $.ajax({
 		type: 'POST'
 		,url: formUrl
-		,data: {
-			action: moduleAction
-			,ajax: true
-		}
+		,data: queryData
 		,dataType: 'json'
-		,success: function(json) {
-			console.log(json);
-		}
 		,error: function(xhr, status, error) {
 			//show error message
 			console.log('C3MainFilter Module error: ' + error);
 		}
-	});
+	}).done(successFunction);
+}
+
+/*
+ * fetch data and creates all c3MainFilter html elements for given step
+ * 
+ * @author Schnepp David
+ * @since v0.2 2016/10/30
+ */
+function c3_showFilterChoices(json){
+	var id_filter_selection_group = json['id_filter_selection_group'];
+	console.log('result: ' + json);
 }
 
 $(document).ready(c3_setupMainFilter);

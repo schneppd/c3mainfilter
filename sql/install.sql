@@ -48,9 +48,11 @@ CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group` AS SELECT DISTINC
  FROM `PREFIX_c3_mainfilter_selection_group`
  ORDER BY tcreation;
 CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_shelf` AS SELECT DISTINCT
- id_filter_selection_group, id_category
- FROM `PREFIX_c3_mainfilter_selection_group_shelf`
- ORDER BY id_category, tcreation, id_filter_selection_group;
+ msgs.id_filter_selection_group, msgs.id_category
+ , msg.name
+ FROM `PREFIX_c3_mainfilter_selection_group_shelf` AS msgs
+ INNER JOIN `PREFIX_c3_mainfilter_selection_group` AS msg ON (msg.id_filter_selection_group = msgs.id_filter_selection_group)
+ ORDER BY msgs.id_category, msgs.tcreation, msgs.id_filter_selection_group;
 CREATE OR REPLACE VIEW `PREFIX_vc3_mainfilter_selection_group_member` AS SELECT DISTINCT
  id_filter_selection, id_filter_selection_group
  FROM `PREFIX_c3_mainfilter_selection_group_member`

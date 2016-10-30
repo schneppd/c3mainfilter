@@ -111,9 +111,8 @@ class MainFilterController extends \NsC3MainFilterFramework\ModuleController {
 		}
 		$filterGroupData['options'] = $this->removePathFromChoices($options);
 		$json = json_encode($filterGroupData);
-		$txt = 'var c3MainFilterDataPart = ' . $json . ';';
 		//$filterGroupData['options'] = $options;
-		\NsC3MainFilterFramework\ModuleIO::writeStringToFile($txt, $filePath);
+		\NsC3MainFilterFramework\ModuleIO::writeStringToFile($json, $filePath);
 		
 	}
 	

@@ -89,9 +89,11 @@ function c3_getMainFilterWebserviceUrl(){
  * @since v0.2 2016/10/30
  */
 function c3_getMainFilterStartSelectionJsonData(){
+	var c3MainFilterData = c3_getDataAvailableToSetupMainFilter();
 	var queryData = {
 		action: 'get_available_choices'
 		,ajax: true
+		,id_filter_selection_group: c3MainFilterData.id_filter_selection_group
 	};
 	c3_makeAjaxCallAndProcessResponse(queryData, c3_showFilterChoices);
 }
